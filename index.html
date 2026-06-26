@@ -167,7 +167,7 @@
     .service-card {
       background: rgba(30,58,95,0.18);
       border: 1px solid rgba(45,74,107,0.5);
-      border-radius: 3px; padding: 2.2rem;
+      border-radius: 3px; padding: 0;
       position: relative; overflow: hidden;
       transition: background 0.25s, border-color 0.25s;
     }
@@ -175,13 +175,36 @@
       content: ''; position: absolute;
       top: 0; left: 0; width: 3px; height: 0;
       background: var(--ember); transition: height 0.3s ease;
+      z-index: 2;
     }
     .service-card:hover::before { height: 100%; }
     .service-card:hover {
       background: rgba(30,58,95,0.32);
       border-color: rgba(200,57,14,0.28);
     }
-    .service-icon { font-size: 2rem; margin-bottom: 1.2rem; }
+    /* imagen del card */
+    .service-img-wrap {
+      width: 100%; height: 175px; overflow: hidden;
+      position: relative;
+    }
+    .service-img-wrap img {
+      width: 100%; height: 100%; object-fit: cover; object-position: center;
+      filter: brightness(0.55) saturate(0.65);
+      transition: filter 0.35s, transform 0.4s;
+      display: block;
+    }
+    .service-card:hover .service-img-wrap img {
+      filter: brightness(0.42) saturate(0.5);
+      transform: scale(1.04);
+    }
+    .service-img-wrap::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0; height: 60%;
+      background: linear-gradient(transparent, rgba(13,27,42,0.95));
+      pointer-events: none;
+    }
+    /* body del card */
+    .service-card-body { padding: 1.6rem 2rem 2rem; }
     .service-title {
       font-family: 'Bebas Neue', sans-serif;
       font-size: 1.45rem; color: var(--warm-white);
@@ -194,6 +217,55 @@
       font-size: 0.58rem; letter-spacing: 0.1em;
       color: var(--ember); background: var(--ember-dim);
       padding: 0.22rem 0.58rem; border-radius: 2px; text-transform: uppercase;
+    }
+
+    /* ── EQUIPMENT STRIP ─────────────────── */
+    #equip-strip {
+      padding: 0;
+      background: rgba(8,18,30,0.7);
+      border-top: 1px solid rgba(45,74,107,0.3);
+      border-bottom: 1px solid rgba(45,74,107,0.3);
+      overflow: hidden;
+    }
+    .equip-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      height: 240px;
+    }
+    .equip-item {
+      position: relative; overflow: hidden; cursor: default;
+    }
+    .equip-item img {
+      width: 100%; height: 100%; object-fit: cover; object-position: center;
+      filter: brightness(0.45) saturate(0.55);
+      transition: filter 0.35s, transform 0.4s;
+      display: block;
+    }
+    .equip-item:hover img {
+      filter: brightness(0.62) saturate(0.75);
+      transform: scale(1.06);
+    }
+    .equip-item::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(13,27,42,0.85) 0%, transparent 55%);
+      pointer-events: none;
+    }
+    .equip-label {
+      position: absolute; bottom: 0; left: 0; right: 0; z-index: 1;
+      padding: 0.9rem 1rem 0.75rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem; color: var(--off-white);
+      letter-spacing: 0.14em; text-transform: uppercase;
+    }
+    .equip-label span {
+      display: block; font-size: 0.52rem;
+      color: var(--muted); letter-spacing: 0.1em; margin-top: 0.2rem;
+    }
+    @media (max-width: 820px) {
+      .equip-grid { grid-template-columns: repeat(3, 1fr); height: 180px; }
+      .equip-item:nth-child(4),
+      .equip-item:nth-child(5) { display: none; }
     }
 
     /* ── NOSOTROS ────────────────────────── */
@@ -457,45 +529,138 @@
 
   <div class="services-grid">
     <div class="service-card">
-      <div class="service-icon">🔧</div>
-      <div class="service-title">Suministro de Equipos</div>
-      <p class="service-desc">Proveemos sistemas de detección, supresión y control de incendios de las principales marcas internacionales. Equipos homologados para cada tipo de riesgo y norma aplicable.</p>
-      <div class="service-tags">
-        <span class="tag">Sprinklers</span>
-        <span class="tag">Detectores</span>
-        <span class="tag">Gabinetes</span>
-        <span class="tag">Bombas</span>
-        <span class="tag">Agentes limpios</span>
+      <div class="service-img-wrap">
+        <img
+          src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=75&fit=crop"
+          alt="Sistemas de sprinklers y equipos contraincendios"
+          loading="lazy"
+          onerror="this.parentElement.style.background='rgba(30,58,95,0.4)';this.style.display='none'"
+        >
+      </div>
+      <div class="service-card-body">
+        <div class="service-title">Suministro de Equipos</div>
+        <p class="service-desc">Proveemos sistemas de detección, supresión y control de incendios de las principales marcas internacionales. Equipos homologados para cada tipo de riesgo y norma aplicable.</p>
+        <div class="service-tags">
+          <span class="tag">Sprinklers</span>
+          <span class="tag">Detectores</span>
+          <span class="tag">Gabinetes</span>
+          <span class="tag">Bombas</span>
+          <span class="tag">Agentes limpios</span>
+        </div>
       </div>
     </div>
 
     <div class="service-card">
-      <div class="service-icon">📐</div>
-      <div class="service-title">Consultoría y Diseño</div>
-      <p class="service-desc">Ingeniería conceptual, básica y de detalle bajo normas NFPA, FM y estándares internacionales. Modelamos tu sistema con BIM antes de instalar una sola pieza.</p>
-      <div class="service-tags">
-        <span class="tag">NFPA</span>
-        <span class="tag">FM Global</span>
-        <span class="tag">BIM</span>
-        <span class="tag">Hidráulico</span>
-        <span class="tag">Análisis de riesgo</span>
+      <div class="service-img-wrap">
+        <img
+          src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=600&q=75&fit=crop"
+          alt="Ingeniería y diseño de sistemas contraincendios"
+          loading="lazy"
+          onerror="this.parentElement.style.background='rgba(30,58,95,0.4)';this.style.display='none'"
+        >
+      </div>
+      <div class="service-card-body">
+        <div class="service-title">Consultoría y Diseño</div>
+        <p class="service-desc">Ingeniería conceptual, básica y de detalle bajo normas NFPA, FM y estándares internacionales. Modelamos tu sistema con BIM antes de instalar una sola pieza.</p>
+        <div class="service-tags">
+          <span class="tag">NFPA</span>
+          <span class="tag">FM Global</span>
+          <span class="tag">BIM</span>
+          <span class="tag">Hidráulico</span>
+          <span class="tag">Análisis de riesgo</span>
+        </div>
       </div>
     </div>
 
     <div class="service-card">
-      <div class="service-icon">⚙️</div>
-      <div class="service-title">Servicios Técnicos</div>
-      <p class="service-desc">Pruebas hidrostáticas, mantenimiento preventivo, certificación de sistemas y acompañamiento normativo. Garantizamos que tu sistema responda cuando más lo necesitas.</p>
-      <div class="service-tags">
-        <span class="tag">NFPA 25</span>
-        <span class="tag">NFPA 20</span>
-        <span class="tag">Pruebas</span>
-        <span class="tag">Certificación</span>
-        <span class="tag">Plan maestro</span>
+      <div class="service-img-wrap">
+        <img
+          src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=600&q=75&fit=crop"
+          alt="Pruebas técnicas y mantenimiento de sistemas contraincendios"
+          loading="lazy"
+          onerror="this.parentElement.style.background='rgba(30,58,95,0.4)';this.style.display='none'"
+        >
+      </div>
+      <div class="service-card-body">
+        <div class="service-title">Servicios Técnicos</div>
+        <p class="service-desc">Pruebas hidrostáticas, mantenimiento preventivo, certificación de sistemas y acompañamiento normativo. Garantizamos que tu sistema responda cuando más lo necesitas.</p>
+        <div class="service-tags">
+          <span class="tag">NFPA 25</span>
+          <span class="tag">NFPA 20</span>
+          <span class="tag">Pruebas</span>
+          <span class="tag">Certificación</span>
+          <span class="tag">Plan maestro</span>
+        </div>
       </div>
     </div>
   </div>
 </section>
+
+<!-- ── EQUIPMENT STRIP ────────────────────────────── -->
+<div id="equip-strip">
+  <div class="equip-grid">
+    <div class="equip-item">
+      <img
+        src="https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=400&q=70&fit=crop"
+        alt="Rociador automático sprinkler"
+        loading="lazy"
+        onerror="this.style.display='none'"
+      >
+      <div class="equip-label">
+        Rociadores
+        <span>Sprinklers automáticos</span>
+      </div>
+    </div>
+    <div class="equip-item">
+      <img
+        src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=400&q=70&fit=crop"
+        alt="Panel de control sistema de alarma contraincendios"
+        loading="lazy"
+        onerror="this.style.display='none'"
+      >
+      <div class="equip-label">
+        Paneles de control
+        <span>Detección y alarma</span>
+      </div>
+    </div>
+    <div class="equip-item">
+      <img
+        src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&q=70&fit=crop"
+        alt="Ingeniería contraincendios en obra"
+        loading="lazy"
+        onerror="this.style.display='none'"
+      >
+      <div class="equip-label">
+        Instalación en obra
+        <span>Coordinación multidisciplinar</span>
+      </div>
+    </div>
+    <div class="equip-item">
+      <img
+        src="https://images.unsplash.com/photo-1565008447742-97f6f38c985c?w=400&q=70&fit=crop"
+        alt="Bomba contraincendios industrial"
+        loading="lazy"
+        onerror="this.style.display='none'"
+      >
+      <div class="equip-label">
+        Bombas
+        <span>Sistemas de presurización</span>
+      </div>
+    </div>
+    <div class="equip-item">
+      <img
+        src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&q=70&fit=crop"
+        alt="Pruebas técnicas de sistemas contraincendios"
+        loading="lazy"
+        onerror="this.style.display='none'"
+      >
+      <div class="equip-label">
+        Pruebas NFPA 25
+        <span>Inspección y certificación</span>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- ── NOSOTROS ───────────────────────────────────── -->
 <section id="nosotros">
@@ -616,7 +781,7 @@
       <!--
         CAMBIAR TELÉFONO: actualiza el número en href y en el texto
       -->
-      <a href="https://wa.me/573113239495">+57 3113239495</a>
+      <a href="https://wa.me/573000000000">+57 300 000 0000</a>
 
       <h3>LinkedIn</h3>
       <!--
@@ -710,18 +875,12 @@
 </footer>
 
 <script>
-  /*
+  /* ─────────────────────────────────────────────────────────────
    * FORM HANDLER
-   * - En Netlify (producción): data-netlify="true" maneja todo automáticamente.
-   *   Netlify intercepta el POST, guarda la submission y envía el email.
-   *   El usuario es redirigido a /thank-you.html (configurable en dashboard).
-   *
-   * - En local (localhost): no hay servidor Netlify, entonces este handler
-   *   simula el estado de éxito visualmente para que puedas probar el flujo.
-   *
-   * Para el CI smoke test: el test hará un POST a /cotizacion con los campos
-   * requeridos y esperará status 200 — exactamente como un RestAssured test.
-   */
+   * - Netlify (prod): data-netlify="true" intercepta el POST
+   *   automáticamente. No se necesita backend.
+   * - Local (localhost): feedback visual sin servidor.
+   * ───────────────────────────────────────────────────────────── */
   const form    = document.getElementById('cotizacion-form');
   const success = document.getElementById('form-success');
 
@@ -730,16 +889,15 @@
       const isLocal =
         window.location.hostname === 'localhost' ||
         window.location.hostname === '127.0.0.1';
-
       if (isLocal) {
-        // Feedback visual en dev sin necesitar backend
         e.preventDefault();
         form.style.display = 'none';
         success.classList.add('show');
       }
-      // En Netlify: el form se envía normalmente (no se previene el default)
     });
   }
+
+
 </script>
 
 </body>
