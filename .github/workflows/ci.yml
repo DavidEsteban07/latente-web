@@ -1,0 +1,42 @@
+name: CI — Latente Web
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validar que index.html existe
+        run: |
+          if [ ! -f index.html ]; then
+            echo "❌ index.html no encontrado"
+            exit 1
+          fi
+          echo "✅ index.html encontrado"
+
+      - name: Validar atributo Netlify Forms
+        run: |
+          if grep -q 'data-netlify="true"' index.html; then
+            echo "✅ Netlify Forms configurado"
+          else
+            echo "❌ Falta data-netlify en el form"
+            exit 1
+          fi
+
+      - name: Validar campos requeridos del form
+        run: |
+          for field in "name=\"nombre\"" "name=\"email\"" "name=\"tipo\"" "name=\"mensaje\""; do
+            if grep -q "$field" index.html; then
+              echo "✅ Campo $field presente"
+            else
+              echo "❌ Campo $field falta"
+              exit 1
+            fi
+          done
